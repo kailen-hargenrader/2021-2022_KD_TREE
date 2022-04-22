@@ -148,7 +148,7 @@ public class KdTree {
 		return points;
 	}
 	
-	private Iterable<Point2D> range(TreeNode t, RectHV rect, ArrayList<Point2D> points){
+	private void range(TreeNode t, RectHV rect, ArrayList<Point2D> points){
 		if(rect.contains(t.getValue())) points.add(t.getValue());
 		if(t.getVert()) {
 			if(t.getValue().x() < rect.xmin()) {
