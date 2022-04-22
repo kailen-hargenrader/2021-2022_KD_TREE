@@ -19,15 +19,17 @@
  ******************************************************************************/
 
 import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.RectHV;
-import java.util.ArrayList;
+import edu.princeton.cs.algs4.StdDraw;
 
+import java.util.TreeSet;
 
 public class PointSET {
-	ArrayList<Point2D> points;
+	TreeSet<Point2D> points;
 	// construct an empty set of points
 	public PointSET() {
-		ArrayList<Point2D> points = new ArrayList<Point2D>();
+		TreeSet<Point2D> points = new TreeSet<Point2D>();
 	}
 	// is the set empty? 
 	public boolean isEmpty() {
@@ -41,9 +43,7 @@ public class PointSET {
 	// add the point to the set (if it is not already in the set)
 	public void insert(Point2D p) {
 		if(p == null) throw new IllegalArgumentException("New point cannot be null");
-		if(!points.contains(p)) {
 			points.add(p);
-		}
 	}
 
 	// does the set contain point p? 
@@ -54,6 +54,9 @@ public class PointSET {
 
 	// draw all points to standard draw 
 	public void draw() {
+		StdDraw.clear();
+		StdDraw.setPenColor(StdDraw.BLACK);
+		StdDraw.setPenRadius(.01);
 		for(Point2D p : points) {
 			p.draw();
 		}
@@ -61,12 +64,25 @@ public class PointSET {
 
 	// all points that are inside the rectangle
 	public Iterable<Point2D> range(RectHV rect) {
-		return null;
+		Queue<Point2D> queue = new Queue<Point2D>();
+		for(Point2D p : points) {
+			if(rect.contains(p)) queue.enqueue(p);
+		}
+		return queue;
 	}
 
 	// a nearest neighbor in the set to point p; null if the set is empty 
 	public Point2D nearest(Point2D p) {
-		return null;
+		if(p == null) throw new IllegalArgumentException("Point cannot be null.");
+		if(isEmpty()) return null;
+		Point2D nearest = null;
+		for (Point2D P : points) {
+			if(nearest == null || P.distanceSquaredTo(p) < nearest.distanceSquaredTo(p)) {
+				nearest = P;
+			}
+			
+		}
+		return nearest;
 	}
 
 	// unit testing of the methods (optional) 
