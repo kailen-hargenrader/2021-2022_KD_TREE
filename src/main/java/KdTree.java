@@ -124,12 +124,17 @@ public class KdTree {
 
 	// draw all points to standard draw 
 	public void draw() {
-		StdDraw.clear();
-		StdDraw.setPenColor(StdDraw.BLACK);
-		StdDraw.setPenRadius(.01);
-		for(Point2D p : points) {
-			p.draw();
+		if(!isEmpty()) {
+			StdDraw.clear();
+			StdDraw.setPenColor(StdDraw.BLACK);
+			StdDraw.setPenRadius(.01);
+			drawNode(root);
 		}
+	}
+	private void drawNode(TreeNode n) {
+		n.getValue().draw();
+		if(n.getRight() != null) drawNode(n.getRight());
+		if(n.getLeft() != null) drawNode(n.getLeft());
 	}
 
 	// all points that are inside the rectangle
