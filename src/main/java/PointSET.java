@@ -29,7 +29,7 @@ public class PointSET {
 	private TreeSet<Point2D> points;
 	// construct an empty set of points
 	public PointSET() {
-		TreeSet<Point2D> points = new TreeSet<Point2D>();
+		points = new TreeSet<Point2D>();
 	}
 	// is the set empty? 
 	public boolean isEmpty() {
@@ -43,7 +43,7 @@ public class PointSET {
 	// add the point to the set (if it is not already in the set)
 	public void insert(Point2D p) {
 		if(p == null) throw new IllegalArgumentException("New point cannot be null");
-			points.add(p);
+		points.add(p);
 	}
 
 	// does the set contain point p? 
@@ -80,7 +80,7 @@ public class PointSET {
 			if(nearest == null || P.distanceSquaredTo(p) < nearest.distanceSquaredTo(p)) {
 				nearest = P;
 			}
-			
+
 		}
 		return nearest;
 	}
