@@ -43,28 +43,40 @@ public class KdTree {
 	// add the point to the set (if it is not already in the set)
 	public void insert(Point2D p) {
 		if(p == null) throw new IllegalArgumentException("New point cannot be null");
-		if(isEmpty()) root = new TreeNode(p, false);
+		if(isEmpty()) root = new TreeNode(p, true);
 		else {
 			TreeNode t = root;
 			while(t.getLeft() != null || t.getRight() != null) {
 				if(t.getVert()) {
 					if(p.x() > t.getValue().x()) {
 						if(t.getRight() != null) t=t.getRight();
-						else t.SetRight(new TreeNode(p, !t.getVert()));
+						else {
+							t.SetRight(new TreeNode(p, !t.getVert()));
+							t=t.getRight();
+						}
 					}
 					else {
 						if(t.getLeft() != null) t=t.getLeft();
-						else t.SetLeft(new TreeNode(p, !t.getVert()));
+						else {
+							t.SetLeft(new TreeNode(p, !t.getVert()));
+							t=t.getLeft();
+						}
 					}
 				}
 				else {
 					if(p.y() > t.getValue().y()) {
 						if(t.getRight() != null) t=t.getRight();
-						else t.SetRight(new TreeNode(p, !t.getVert()));
+						else {
+							t.SetRight(new TreeNode(p, !t.getVert()));
+							t=t.getRight();
+						}
 					}
 					else {
 						if(t.getLeft() != null) t=t.getLeft();
-						else t.SetLeft(new TreeNode(p, !t.getVert()));
+						else {
+							t.SetLeft(new TreeNode(p, !t.getVert()));
+							t=t.getLeft();
+						}
 					}
 				}
 			}
@@ -74,7 +86,40 @@ public class KdTree {
 	// does the set contain point p? 
 	public boolean contains(Point2D p) {
 		if(p == null) throw new IllegalArgumentException("Cannot check for null point");
-		while()
+		if(isEmpty()) return false;
+		if(p.equals(root.getValue())) return true;
+		TreeNode t = root;
+		while(t.getLeft() != null || t.getRight() != null) {
+			if(t.getVert()) {
+				if(p.x() > t.getValue().x()) {
+					if(t.getRight() != null) {
+						if(p == t.getRight().getValue()) return true;
+						t=t.getRight();
+					}
+				}
+				else {
+					if(t.getLeft() != null) {
+						if(p == t.getLeft().getValue()) return true;
+						t=t.getLeft();
+					}
+				}
+			}
+			else {
+				if(p.y() > t.getValue().y()) {
+					if(t.getRight() != null) {
+						if(p == t.getRight().getValue()) return true;
+						t=t.getRight();
+					}
+				}
+				else {
+					if(t.getLeft() != null) {
+						if(p == t.getLeft().getValue()) return true;
+						t=t.getLeft();
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	// draw all points to standard draw 
