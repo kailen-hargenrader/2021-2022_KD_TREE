@@ -26,7 +26,7 @@ import edu.princeton.cs.algs4.StdDraw;
 import java.util.TreeSet;
 
 public class PointSET {
-	TreeSet<Point2D> points;
+	private TreeSet<Point2D> points;
 	// construct an empty set of points
 	public PointSET() {
 		TreeSet<Point2D> points = new TreeSet<Point2D>();
