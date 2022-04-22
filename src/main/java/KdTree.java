@@ -18,6 +18,8 @@
  *  and nearest-neighbor search (find a closest point to a query point).
  ******************************************************************************/
 
+import java.util.ArrayList;
+
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
@@ -139,7 +141,39 @@ public class KdTree {
 
 	// all points that are inside the rectangle
 	public Iterable<Point2D> range(RectHV rect) {
-		for()
+		if(rect == null) throw new IllegalArgumentException("Rectangle cannot be null.");
+		ArrayList<Point2D> points = new ArrayList<Point2D>();
+		if(isEmpty()) return points;
+		range(root, rect, points);
+		return points;
+	}
+	
+	private Iterable<Point2D> range(TreeNode t, RectHV rect, ArrayList<Point2D> points){
+		if(rect.contains(t.getValue())) points.add(t.getValue());
+		if(t.getVert()) {
+			if(t.getValue().x() < rect.xmin()) {
+				if(t.getLeft() != null) range(t.getLeft(), rect, points);
+			}
+			else if(t.getValue().x() > rect.xmax()) {
+				if(t.getRight() != null) range(t.getRight(), rect, points);
+			}
+			else {
+				if(t.getLeft() != null) range(t.getLeft(), rect, points);
+				if(t.getRight() != null) range(t.getRight(), rect, points);
+			}
+		}
+		else {
+			if(t.getValue().y() < rect.ymin()) {
+				if(t.getLeft() != null) range(t.getLeft(), rect, points);
+			}
+			else if(t.getValue().y() > rect.ymax()) {
+				if(t.getRight() != null) range(t.getRight(), rect, points);
+			}
+			else {
+				if(t.getLeft() != null) range(t.getLeft(), rect, points);
+				if(t.getRight() != null) range(t.getRight(), rect, points);
+			}
+		}
 	}
 
 	// a nearest neighbor in the set to point p; null if the set is empty 
