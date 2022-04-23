@@ -196,6 +196,10 @@ public class KdTree {
 					nearestNode(p, t.getLeft(), d, min);
 				}
 				if(t.getRight() != null && (t.getValue().x() - p.x()) * (t.getValue().x() - p.x()) < d) {
+					if(p.distanceSquaredTo(t.getRight().getValue()) < d) {
+						min = t.getRight();
+						d = p.distanceSquaredTo(t.getRight().getValue());
+					}
 					nearestNode(p, t.getRight(), d, min);
 				}
 			}
@@ -208,6 +212,10 @@ public class KdTree {
 					nearestNode(p, t.getRight(), d, min);
 				}
 				if(t.getLeft() != null && (t.getValue().x() - p.x()) * (t.getValue().x() - p.x()) < d) {
+					if(p.distanceSquaredTo(t.getLeft().getValue()) < d) {
+						min = t.getLeft();
+						d = p.distanceSquaredTo(t.getLeft().getValue());
+					}
 					nearestNode(p, t.getLeft(), d, min);
 				}
 			}
@@ -222,6 +230,10 @@ public class KdTree {
 					nearestNode(p, t.getLeft(), d, min);
 				}
 				if(t.getRight() != null && (t.getValue().y() - p.y()) * (t.getValue().y() - p.y()) < d) {
+					if(p.distanceSquaredTo(t.getRight().getValue()) < d) {
+						min = t.getRight();
+						d = p.distanceSquaredTo(t.getRight().getValue());
+					}
 					nearestNode(p, t.getRight(), d, min);
 				}
 			}
@@ -234,6 +246,10 @@ public class KdTree {
 					nearestNode(p, t.getRight(), d, min);
 				}
 				if(t.getLeft() != null && (t.getValue().y() - p.y()) * (t.getValue().y() - p.y()) < d) {
+					if(p.distanceSquaredTo(t.getLeft().getValue()) < d) {
+						min = t.getLeft();
+						d = p.distanceSquaredTo(t.getLeft().getValue());
+					}
 					nearestNode(p, t.getLeft(), d, min);
 				}
 			}
