@@ -146,10 +146,10 @@ public class KdTree {
 	private void range(TreeNode t, RectHV rect, ArrayList<Point2D> points){
 		if(rect.contains(t.getValue())) points.add(t.getValue());
 		if(t.getVert()) {
-			if(t.getValue().x() < rect.xmin()) {
+			if(t.getValue().x() > rect.xmin()) {
 				if(t.getLeft() != null) range(t.getLeft(), rect, points);
 			}
-			else if(t.getValue().x() > rect.xmax()) {
+			else if(t.getValue().x() < rect.xmax()) {
 				if(t.getRight() != null) range(t.getRight(), rect, points);
 			}
 			else {
@@ -158,10 +158,10 @@ public class KdTree {
 			}
 		}
 		else {
-			if(t.getValue().y() < rect.ymin()) {
+			if(t.getValue().y() > rect.ymin()) {
 				if(t.getLeft() != null) range(t.getLeft(), rect, points);
 			}
-			else if(t.getValue().y() > rect.ymax()) {
+			else if(t.getValue().y() < rect.ymax()) {
 				if(t.getRight() != null) range(t.getRight(), rect, points);
 			}
 			else {
