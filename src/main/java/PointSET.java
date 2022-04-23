@@ -64,6 +64,7 @@ public class PointSET {
 
 	// all points that are inside the rectangle
 	public Iterable<Point2D> range(RectHV rect) {
+		if(rect == null) throw new IllegalArgumentException("Rectangle cannot be null.");
 		Queue<Point2D> queue = new Queue<Point2D>();
 		for(Point2D p : points) {
 			if(rect.contains(p)) queue.enqueue(p);

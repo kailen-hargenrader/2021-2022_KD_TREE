@@ -48,20 +48,22 @@ public class KdTree {
 		if(isEmpty()) root = new TreeNode(p, true);
 		else {
 			TreeNode t = root;
-			while(t.getLeft() != null || t.getRight() != null) {
+			while(!p.equals(t.getValue()) && (t.getLeft() != null || t.getRight() != null)) {
 				if(t.getVert()) {
 					if(p.x() > t.getValue().x()) {
 						if(t.getRight() != null) t=t.getRight();
 						else {
 							t.SetRight(new TreeNode(p, !t.getVert()));
 							t=t.getRight();
+							size++;
 						}
 					}
-					else {
+					else if(p.x() < t.getValue().x()){
 						if(t.getLeft() != null) t=t.getLeft();
 						else {
 							t.SetLeft(new TreeNode(p, !t.getVert()));
 							t=t.getLeft();
+							size++;
 						}
 					}
 				}
@@ -71,6 +73,7 @@ public class KdTree {
 						else {
 							t.SetRight(new TreeNode(p, !t.getVert()));
 							t=t.getRight();
+							size++;
 						}
 					}
 					else {
@@ -78,6 +81,7 @@ public class KdTree {
 						else {
 							t.SetLeft(new TreeNode(p, !t.getVert()));
 							t=t.getLeft();
+							size++;
 						}
 					}
 				}
@@ -95,13 +99,13 @@ public class KdTree {
 			if(t.getVert()) {
 				if(p.x() > t.getValue().x()) {
 					if(t.getRight() != null) {
-						if(p == t.getRight().getValue()) return true;
+						if(p.equals(t.getRight().getValue())) return true;
 						t=t.getRight();
 					}
 				}
 				else {
 					if(t.getLeft() != null) {
-						if(p == t.getLeft().getValue()) return true;
+						if(p.equals(t.getLeft().getValue())) return true;
 						t=t.getLeft();
 					}
 				}
@@ -109,13 +113,13 @@ public class KdTree {
 			else {
 				if(p.y() > t.getValue().y()) {
 					if(t.getRight() != null) {
-						if(p == t.getRight().getValue()) return true;
+						if(p.equals(t.getRight().getValue())) return true;
 						t=t.getRight();
 					}
 				}
 				else {
 					if(t.getLeft() != null) {
-						if(p == t.getLeft().getValue()) return true;
+						if(p.equals(t.getLeft().getValue())) return true;
 						t=t.getLeft();
 					}
 				}
