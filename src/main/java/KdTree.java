@@ -144,72 +144,80 @@ public class KdTree {
 	}
 
 	private void range(TreeNode t, RectHV rect, ArrayList<Point2D> points){
-		if(rect.contains(t.getValue())) points.add(t.getValue());
-		if(t.getVert()) {
-			if(t.getValue().x() > rect.xmin()) {
-				if(t.getLeft() != null) range(t.getLeft(), rect, points);
-			}
-			else if(t.getValue().x() < rect.xmax()) {
-				if(t.getRight() != null) range(t.getRight(), rect, points);
-			}
-			else {
-				if(t.getLeft() != null) range(t.getLeft(), rect, points);
-				if(t.getRight() != null) range(t.getRight(), rect, points);
-			}
+		if(rect.contains(t.getValue())) {
+			points.add(t.getValue());
+			if(t.getLeft() != null) range(t.getLeft(), rect, points);
+			if(t.getRight() != null) range(t.getRight(), rect, points);
 		}
 		else {
-			if(t.getValue().y() > rect.ymin()) {
-				if(t.getLeft() != null) range(t.getLeft(), rect, points);
-			}
-			else if(t.getValue().y() < rect.ymax()) {
-				if(t.getRight() != null) range(t.getRight(), rect, points);
+			if(t.getVert()) {
+				if(t.getValue().x() < rect.xmin()) {
+					if(t.getRight() != null) range(t.getRight(), rect, points);
+				}
+				else if(t.getValue().x() > rect.xmax()) {
+					if(t.getLeft() != null) range(t.getLeft(), rect, points);
+				}
+				else {
+					if(t.getLeft() != null) range(t.getLeft(), rect, points);
+					if(t.getRight() != null) range(t.getRight(), rect, points);
+				}
 			}
 			else {
-				if(t.getLeft() != null) range(t.getLeft(), rect, points);
-				if(t.getRight() != null) range(t.getRight(), rect, points);
+				if(t.getValue().y() < rect.ymin()) {
+					if(t.getRight() != null) range(t.getRight(), rect, points);
+				}
+				else if(t.getValue().y() > rect.ymax()) {
+					if(t.getLeft() != null) range(t.getLeft(), rect, points);
+				}
+				else {
+					if(t.getLeft() != null) range(t.getLeft(), rect, points);
+					if(t.getRight() != null) range(t.getRight(), rect, points);
+				}
 			}
 		}
+		
 	}
 
 	// a nearest neighbor in the set to point p; null if the set is empty 
 	public Point2D nearest(Point2D p) {
 		if(p == null) throw new IllegalArgumentException("Point cannot be null.");
 		if(isEmpty()) return null;
-		Double dist = p.distanceSquaredTo(root.getValue());
-		TreeNode minNode = root;
-		nearestNode(p, root, dist, minNode);
-		return minNode.getValue();
+		TreeNode min = root;
+		doubleWithValue dist = new doubleWithValue(p.distanceSquaredTo(root.getValue()));
+		nearestNode(p, root, dist, min);
+		return min.getValue();
+		
 	}
-	private void nearestNode(Point2D p, TreeNode t, Double d, TreeNode min) {
+	private void nearestNode(Point2D p, TreeNode t, doubleWithValue d, TreeNode min) {
 		if(t.getVert()) {
 			if(p.x() <= t.getValue().x()) {
 				if(t.getLeft() != null) {
-					if(p.distanceSquaredTo(t.getLeft().getValue()) < d) {
+					if(p.distanceSquaredTo(t.getLeft().getValue()) < d.getValue()) {
 						min = t.getLeft();
-						d = p.distanceSquaredTo(t.getLeft().getValue());
+						d.setValue(p.distanceSquaredTo(t.getLeft().getValue()));
 					}
 					nearestNode(p, t.getLeft(), d, min);
 				}
-				if(t.getRight() != null && (t.getValue().x() - p.x()) * (t.getValue().x() - p.x()) < d) {
-					if(p.distanceSquaredTo(t.getRight().getValue()) < d) {
+				if(t.getRight() != null && (t.getValue().x() - p.x()) * (t.getValue().x() - p.x()) < d.getValue()) {
+					if(p.distanceSquaredTo(t.getRight().getValue()) < d.getValue()) {
 						min = t.getRight();
-						d = p.distanceSquaredTo(t.getRight().getValue());
+						d.setValue(p.distanceSquaredTo(t.getRight().getValue()));
 					}
 					nearestNode(p, t.getRight(), d, min);
 				}
 			}
 			else {
 				if(t.getRight() != null) {
-					if(p.distanceSquaredTo(t.getRight().getValue()) < d) {
+					if(p.distanceSquaredTo(t.getRight().getValue()) < d.getValue()) {
 						min = t.getRight();
-						d = p.distanceSquaredTo(t.getRight().getValue());
+						d.setValue(p.distanceSquaredTo(t.getRight().getValue()));
 					}
 					nearestNode(p, t.getRight(), d, min);
 				}
-				if(t.getLeft() != null && (t.getValue().x() - p.x()) * (t.getValue().x() - p.x()) < d) {
-					if(p.distanceSquaredTo(t.getLeft().getValue()) < d) {
+				if(t.getLeft() != null && (t.getValue().x() - p.x()) * (t.getValue().x() - p.x()) < d.getValue()) {
+					if(p.distanceSquaredTo(t.getLeft().getValue()) < d.getValue()) {
 						min = t.getLeft();
-						d = p.distanceSquaredTo(t.getLeft().getValue());
+						d.setValue(p.distanceSquaredTo(t.getLeft().getValue()));
 					}
 					nearestNode(p, t.getLeft(), d, min);
 				}
@@ -218,32 +226,32 @@ public class KdTree {
 		else {
 			if(p.y() <= t.getValue().y()) {
 				if(t.getLeft() != null) {
-					if(p.distanceSquaredTo(t.getLeft().getValue()) < d) {
+					if(p.distanceSquaredTo(t.getLeft().getValue()) < d.getValue()) {
 						min = t.getLeft();
-						d = p.distanceSquaredTo(t.getLeft().getValue());
+						d.setValue(p.distanceSquaredTo(t.getLeft().getValue()));
 					}
 					nearestNode(p, t.getLeft(), d, min);
 				}
-				if(t.getRight() != null && (t.getValue().y() - p.y()) * (t.getValue().y() - p.y()) < d) {
-					if(p.distanceSquaredTo(t.getRight().getValue()) < d) {
+				if(t.getRight() != null && (t.getValue().y() - p.y()) * (t.getValue().y() - p.y()) < d.getValue()) {
+					if(p.distanceSquaredTo(t.getRight().getValue()) < d.getValue()) {
 						min = t.getRight();
-						d = p.distanceSquaredTo(t.getRight().getValue());
+						d.setValue(p.distanceSquaredTo(t.getRight().getValue()));
 					}
 					nearestNode(p, t.getRight(), d, min);
 				}
 			}
 			else {
 				if(t.getRight() != null) {
-					if(p.distanceSquaredTo(t.getRight().getValue()) < d) {
+					if(p.distanceSquaredTo(t.getRight().getValue()) < d.getValue()) {
 						min = t.getRight();
-						d = p.distanceSquaredTo(t.getRight().getValue());
+						d.setValue(p.distanceSquaredTo(t.getRight().getValue()));
 					}
 					nearestNode(p, t.getRight(), d, min);
 				}
-				if(t.getLeft() != null && (t.getValue().y() - p.y()) * (t.getValue().y() - p.y()) < d) {
-					if(p.distanceSquaredTo(t.getLeft().getValue()) < d) {
+				if(t.getLeft() != null && (t.getValue().y() - p.y()) * (t.getValue().y() - p.y()) < d.getValue()) {
+					if(p.distanceSquaredTo(t.getLeft().getValue()) < d.getValue()) {
 						min = t.getLeft();
-						d = p.distanceSquaredTo(t.getLeft().getValue());
+						d.setValue(p.distanceSquaredTo(t.getLeft().getValue()));
 					}
 					nearestNode(p, t.getLeft(), d, min);
 				}
@@ -296,5 +304,20 @@ class TreeNode {
 	}
 }
 
+class doubleWithValue{
+	private double d;
+	
+	public doubleWithValue(double number){
+		d = number;
+	}
+	
+	public void setValue(double number) {
+		d = number;
+	}
+	
+	public double getValue() {
+		return d;
+	}
+}
 
 
