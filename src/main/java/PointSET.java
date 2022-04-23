@@ -25,34 +25,64 @@ import edu.princeton.cs.algs4.StdDraw;
 
 import java.util.TreeSet;
 
+/**
+ * A brute force implementation of range and nearest neighbor search.
+ * @author monke
+ *
+ */
 public class PointSET {
 	private TreeSet<Point2D> points;
+	
+	/**
+	 * Initialize TreeSet of points
+	 */
 	// construct an empty set of points
 	public PointSET() {
 		points = new TreeSet<Point2D>();
 	}
+	
+	/**
+	 * Is the set empty
+	 * @return empty?
+	 */
 	// is the set empty? 
 	public boolean isEmpty() {
 		return points.size() == 0;
 	}
+	
+	/**
+	 * returns number of points
+	 * @return number of points
+	 */
 	// number of points in the set 
 	public int size() {
 		return points.size();
 	}
 
+	/**
+	 * insert a point in the treeSet
+	 */
 	// add the point to the set (if it is not already in the set)
 	public void insert(Point2D p) {
 		if(p == null) throw new IllegalArgumentException("New point cannot be null");
 		points.add(p);
 	}
-
+	
+	/**
+	 * does the treeset contain point p
+	 * @param p point
+	 * @return is p in treeset
+	 */
 	// does the set contain point p? 
 	public boolean contains(Point2D p) {
 		if(p == null) throw new IllegalArgumentException("Cannot check for null point");
 		return points.contains(p);
 	}
 
-	// draw all points to standard draw 
+	/**
+	 * Draws treeset to standard output
+	 */
+	// draw all points to standard draw
 	public void draw() {
 		StdDraw.clear();
 		StdDraw.setPenColor(StdDraw.BLACK);
@@ -62,6 +92,11 @@ public class PointSET {
 		}
 	}
 
+	/**
+	 * Finds points contained within a rectangle
+	 * @param rect rectangle
+	 * @return set of points in rectangle
+	 */
 	// all points that are inside the rectangle
 	public Iterable<Point2D> range(RectHV rect) {
 		if(rect == null) throw new IllegalArgumentException("Rectangle cannot be null.");
@@ -72,6 +107,11 @@ public class PointSET {
 		return queue;
 	}
 
+	/**
+	 * Finds nearest point to point p
+	 * @param p point
+	 * @return nearest point to p
+	 */
 	// a nearest neighbor in the set to point p; null if the set is empty 
 	public Point2D nearest(Point2D p) {
 		if(p == null) throw new IllegalArgumentException("Point cannot be null.");
