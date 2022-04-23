@@ -49,45 +49,29 @@ public class KdTree {
 			root = new TreeNode(p, true);
 			size++;
 		}
+		if(!contains(p)) {
+			insertNode(root, p);
+		}
+	}
+	private void insertNode(TreeNode t, Point2D p) {
+		if(t.getVert()) {
+			if(t.getValue().x() >= p.x()) {
+				if(t.getLeft() != null) insertNode(t.getLeft(), p);
+				else t.SetLeft(new TreeNode(p, !t.getVert()));
+			}
+			else {
+				if(t.getRight() != null) insertNode(t.getRight(), p);
+				else t.SetRight(new TreeNode(p, !t.getVert()));
+			}
+		}
 		else {
-			TreeNode t = root;
-			while(!p.equals(t.getValue()) && (t.getLeft() != null || t.getRight() != null)) {
-				if(t.getVert()) {
-					if(p.x() > t.getValue().x()) {
-						if(t.getRight() != null) t=t.getRight();
-						else {
-							t.SetRight(new TreeNode(p, !t.getVert()));
-							t=t.getRight();
-							size++;
-						}
-					}
-					else {
-						if(t.getLeft() != null) t=t.getLeft();
-						else {
-							t.SetLeft(new TreeNode(p, !t.getVert()));
-							t=t.getLeft();
-							size++;
-						}
-					}
-				}
-				else {
-					if(p.y() > t.getValue().y()) {
-						if(t.getRight() != null) t=t.getRight();
-						else {
-							t.SetRight(new TreeNode(p, !t.getVert()));
-							t=t.getRight();
-							size++;
-						}
-					}
-					else {
-						if(t.getLeft() != null) t=t.getLeft();
-						else {
-							t.SetLeft(new TreeNode(p, !t.getVert()));
-							t=t.getLeft();
-							size++;
-						}
-					}
-				}
+			if(t.getValue().y() >= p.y()) {
+				if(t.getLeft() != null) insertNode(t.getLeft(), p);
+				else t.SetLeft(new TreeNode(p, !t.getVert()));
+			}
+			else {
+				if(t.getRight() != null) insertNode(t.getRight(), p);
+				else t.SetRight(new TreeNode(p, !t.getVert()));
 			}
 		}
 	}
