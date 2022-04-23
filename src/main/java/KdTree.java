@@ -57,21 +57,33 @@ public class KdTree {
 		if(t.getVert()) {
 			if(t.getValue().x() >= p.x()) {
 				if(t.getLeft() != null) insertNode(t.getLeft(), p);
-				else t.SetLeft(new TreeNode(p, !t.getVert()));
+				else {
+					t.SetLeft(new TreeNode(p, !t.getVert()));
+					size++;
+				}
 			}
 			else {
 				if(t.getRight() != null) insertNode(t.getRight(), p);
-				else t.SetRight(new TreeNode(p, !t.getVert()));
+				else {
+					t.SetRight(new TreeNode(p, !t.getVert()));
+					size++;
+				}
 			}
 		}
 		else {
 			if(t.getValue().y() >= p.y()) {
 				if(t.getLeft() != null) insertNode(t.getLeft(), p);
-				else t.SetLeft(new TreeNode(p, !t.getVert()));
+				else {
+					t.SetLeft(new TreeNode(p, !t.getVert()));
+					size++;
+				}
 			}
 			else {
 				if(t.getRight() != null) insertNode(t.getRight(), p);
-				else t.SetRight(new TreeNode(p, !t.getVert()));
+				else {
+					t.SetRight(new TreeNode(p, !t.getVert()));
+					size++;
+				}
 			}
 		}
 	}
