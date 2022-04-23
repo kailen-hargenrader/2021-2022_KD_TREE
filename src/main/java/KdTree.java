@@ -45,7 +45,10 @@ public class KdTree {
 	// add the point to the set (if it is not already in the set)
 	public void insert(Point2D p) {
 		if(p == null) throw new IllegalArgumentException("New point cannot be null");
-		if(isEmpty()) root = new TreeNode(p, true);
+		if(isEmpty()) {
+			root = new TreeNode(p, true);
+			size++;
+		}
 		else {
 			TreeNode t = root;
 			while(!p.equals(t.getValue()) && (t.getLeft() != null || t.getRight() != null)) {
@@ -58,7 +61,7 @@ public class KdTree {
 							size++;
 						}
 					}
-					else if(p.x() < t.getValue().x()){
+					else {
 						if(t.getLeft() != null) t=t.getLeft();
 						else {
 							t.SetLeft(new TreeNode(p, !t.getVert()));
@@ -93,39 +96,31 @@ public class KdTree {
 	public boolean contains(Point2D p) {
 		if(p == null) throw new IllegalArgumentException("Cannot check for null point");
 		if(isEmpty()) return false;
-		if(p.equals(root.getValue())) return true;
 		TreeNode t = root;
-		while(t.getLeft() != null || t.getRight() != null) {
-			if(t.getVert()) {
-				if(p.x() > t.getValue().x()) {
-					if(t.getRight() != null) {
-						if(p.equals(t.getRight().getValue())) return true;
-						t=t.getRight();
-					}
-				}
-				else {
-					if(t.getLeft() != null) {
-						if(p.equals(t.getLeft().getValue())) return true;
-						t=t.getLeft();
-					}
-				}
+		return containsNode(t, p);
+	}
+	private boolean containsNode(TreeNode t, Point2D p) {
+		if(p.equals(t.getValue())) return true;
+		if(t.getVert()) {
+			if(p.x() <= t.getValue().x()) {
+				if(t.getLeft() != null) return containsNode(t.getLeft(), p);
+				else return false;
 			}
 			else {
-				if(p.y() > t.getValue().y()) {
-					if(t.getRight() != null) {
-						if(p.equals(t.getRight().getValue())) return true;
-						t=t.getRight();
-					}
-				}
-				else {
-					if(t.getLeft() != null) {
-						if(p.equals(t.getLeft().getValue())) return true;
-						t=t.getLeft();
-					}
-				}
+				if(t.getRight() != null) return containsNode(t.getRight(), p);
+				else return false;
 			}
 		}
-		return false;
+		else {
+			if(p.y() <= t.getValue().y()) {
+				if(t.getLeft() != null) return containsNode(t.getLeft(), p);
+				else return false;
+			}
+			else {
+				if(t.getRight() != null) return containsNode(t.getRight(), p);
+				else return false;
+			}
+		}
 	}
 
 	// draw all points to standard draw 
